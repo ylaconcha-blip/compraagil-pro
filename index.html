@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CompraÁgil Pro</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  --bg: #0E0F0C;
+  --surface: #161714;
+  --surface2: #1E1F1B;
+  --border: #2A2B27;
+  --border2: #353630;
+  --text: #E8E9E2;
+  --text2: #8A8B82;
+  --text3: #555650;
+  --accent: #C8F535;
+  --accent2: #9AB528;
+  --red: #FF4A4A;
+  --amber: #F5A623;
+  --blue: #4A9EFF;
+  --green: #3ECF6B;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'IBM Plex Sans', sans-serif;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--sans);font-size:13px;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5;}
+
+/* HEADER */
+.header{border-bottom:1px solid var(--border);padding:.8rem 1.4rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;background:var(--bg);flex-wrap:wrap;gap:8px;}
+.logo{font-family:var(--mono);font-size:14px;font-weight:600;color:var(--accent);letter-spacing:-.02em;}
+.logo span{color:var(--text3);}
+.header-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+
+/* SETUP BARS */
+.setup{border-radius:8px;padding:.65rem 1rem;font-size:11px;margin-bottom:.7rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;border:1px solid var(--border);}
+.setup-warn{background:#1A1500;border-color:#3D2E00;color:var(--amber);}
+.setup-ok{background:#0A1A0A;border-color:#1A3A1A;color:var(--green);}
+
+/* MAIN */
+.main{max-width:960px;margin:0 auto;padding:1rem 1rem;}
+
+/* EMPRESA SELECTOR */
+.empresa-bar{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.75rem 1rem;margin-bottom:.9rem;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.empresa-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.empresa-bar select{background:transparent;border:none;color:var(--text);font-size:12px;font-weight:600;cursor:pointer;outline:none;font-family:var(--sans);}
+.empresa-bar select option{background:var(--surface2);}
+
+/* KEYWORD SEARCH */
+.search-panel{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1rem;margin-bottom:.9rem;}
+.search-title{font-family:var(--mono);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.8rem;}
+.rubro-chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:.8rem;}
+.rubro-chip{font-size:10px;padding:4px 10px;border-radius:20px;border:1px solid var(--border2);background:transparent;cursor:pointer;color:var(--text2);transition:all .15s;font-family:var(--mono);}
+.rubro-chip:hover{border-color:var(--accent);color:var(--accent);}
+.rubro-chip.active{background:var(--accent);color:#0E0F0C;border-color:var(--accent);font-weight:600;}
+.rubro-chip.agri.active{background:#3ECF6B;border-color:#3ECF6B;color:#0A1A0A;}
+.rubro-chip.salud.active{background:#FF4A4A;border-color:#FF4A4A;color:#fff;}
+.rubro-chip.industrial.active{background:#4A9EFF;border-color:#4A9EFF;color:#fff;}
+.search-row{display:flex;gap:7px;flex-wrap:wrap;align-items:center;}
+.search-input{flex:1;min-width:180px;padding:8px 12px;border-radius:8px;border:1px solid var(--border2);background:var(--surface2);color:var(--text);font-size:12px;font-family:var(--mono);outline:none;transition:border-color .15s;}
+.search-input:focus{border-color:var(--accent);}
+.search-input::placeholder{color:var(--text3);}
+.estado-select{padding:8px 10px;border-radius:8px;border:1px solid var(--border2);background:var(--surface2);color:var(--text);font-size:11px;font-family:var(--sans);outline:none;cursor:pointer;}
+.search-tabs{display:flex;gap:5px;margin-bottom:.8rem;}
+.s-tab{font-size:10px;padding:4px 10px;border-radius:20px;border:1px solid var(--border2);background:transparent;cursor:pointer;color:var(--text2);transition:all .15s;font-family:var(--mono);}
+.s-tab.active{border-color:var(--accent);color:var(--accent);}
+
+/* BUTTONS */
+.btn{font-size:11px;padding:6px 12px;border-radius:8px;border:1px solid var(--border2);background:var(--surface2);cursor:pointer;color:var(--text);transition:all .15s;font-weight:500;font-family:var(--sans);}
+.btn:hover{border-color:var(--text3);}
+.btn-accent{background:var(--accent);color:#0E0F0C;border-color:var(--accent);font-weight:600;}
+.btn-accent:hover{background:var(--accent2);border-color:var(--accent2);}
+.btn-sm{font-size:10px;padding:3px 8px;}
+
+/* METRICS */
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:6px;margin-bottom:.9rem;}
+.metric{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.65rem .85rem;}
+.metric-label{font-size:9px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;}
+.metric-value{font-size:17px;font-weight:600;font-family:var(--mono);color:var(--text);}
+.metric-value.accent{color:var(--accent);}
+.metric-value.green{color:var(--green);}
+.metric-value.amber{color:var(--amber);}
+.metric-value.red{color:var(--red);}
+
+/* CARDS */
+.cards-list{display:flex;flex-direction:column;gap:6px;}
+.ca-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.85rem .95rem;cursor:pointer;transition:border-color .15s;}
+.ca-card:hover{border-color:var(--border2);}
+.ca-card.selected{border-color:var(--accent);}
+.ca-card.risk-flag{border-left:3px solid var(--red);}
+.ca-header{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:5px;}
+.ca-title{font-size:12px;font-weight:600;flex:1;line-height:1.4;color:var(--text);}
+.ca-score{font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;white-space:nowrap;flex-shrink:0;font-family:var(--mono);}
+.score-h{background:#1A2E0A;color:var(--accent);}
+.score-m{background:#2A1E00;color:var(--amber);}
+.score-l{background:#2A0A0A;color:var(--red);}
+.ca-meta{display:flex;gap:8px;flex-wrap:wrap;font-size:10px;color:var(--text2);margin-bottom:4px;font-family:var(--mono);}
+.tag{font-size:9px;padding:2px 6px;border-radius:20px;display:inline-block;font-family:var(--mono);}
+.tag-pub{background:#1A2E0A;color:var(--accent);}
+.tag-cerr{background:#2A1E00;color:var(--amber);}
+.tag-adj{background:#1A1A2E;color:var(--blue);}
+.tag-des{background:#1A0A0A;color:var(--red);}
+.tag-gray{background:var(--surface2);color:var(--text3);}
+.tag-emt{background:#1A2A2A;color:#4AD4D4;}
+.progress-bar{height:3px;border-radius:2px;background:var(--border);margin-top:5px;overflow:hidden;}
+.progress-fill{height:100%;border-radius:2px;}
+
+/* DETAIL PANEL */
+.detail-panel{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1rem;margin-top:.6rem;}
+.detail-panel h3{font-size:12px;font-weight:600;margin-bottom:.8rem;color:var(--text);}
+.data-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:6px;margin-bottom:.7rem;}
+.data-item{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:.5rem .7rem;}
+.di-label{font-size:9px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;margin-bottom:1px;}
+.di-val{font-size:11px;font-weight:600;color:var(--text);font-family:var(--mono);}
+.di-val.green{color:var(--green);}
+.di-val.amber{color:var(--amber);}
+.di-val.red{color:var(--red);}
+.di-val.accent{color:var(--accent);}
+
+/* AI BOX */
+.ai-box{border-radius:8px;padding:.7rem .85rem;font-size:11px;line-height:1.7;margin-bottom:.6rem;}
+.ai-green{background:#0A1A0F;border:1px solid #1A3A22;color:#7ADFA0;}
+.ai-amber{background:#1A1200;border:1px solid #3A2800;color:#F5C842;}
+.ai-blue{background:#0A0F1A;border:1px solid #1A2A3A;color:#7AB5FF;}
+.ai-purple{background:#0F0A1A;border:1px solid #2A1A3A;color:#C07AFF;}
+.ai-red{background:#1A0A0A;border:1px solid #3A1A1A;color:#FF7A7A;}
+
+/* HISTORIAL TABLE */
+.hist-table{width:100%;border-collapse:collapse;font-size:10px;font-family:var(--mono);}
+.hist-table th{padding:5px 8px;text-align:left;color:var(--text3);font-weight:600;border-bottom:1px solid var(--border2);text-transform:uppercase;font-size:9px;letter-spacing:.05em;}
+.hist-table td{padding:5px 8px;border-bottom:1px solid var(--border);color:var(--text2);}
+.hist-table tr:hover td{background:var(--surface2);}
+.hist-table td.winner{color:var(--green);font-weight:600;}
+.hist-table td.monto{color:var(--accent);font-weight:600;}
+
+/* COMPETITORS */
+.comp-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:.65rem .85rem;margin-bottom:5px;display:flex;align-items:flex-start;gap:10px;}
+.comp-rank{font-family:var(--mono);font-size:16px;font-weight:700;color:var(--text3);width:24px;flex-shrink:0;}
+.comp-bar-wrap{margin-top:3px;height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
+.comp-bar{height:100%;border-radius:2px;background:var(--accent);}
+
+/* PRECIO REF */
+.precio-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:.65rem .85rem;margin-bottom:5px;}
+.precio-range{display:flex;gap:12px;flex-wrap:wrap;margin-top:4px;}
+.precio-val{font-family:var(--mono);font-size:11px;}
+
+/* TABS */
+.tab-bar{display:flex;border-bottom:1px solid var(--border);margin-bottom:.9rem;overflow-x:auto;}
+.tab{font-size:11px;padding:8px 13px;cursor:pointer;color:var(--text3);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;font-family:var(--mono);transition:all .15s;}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.tab-content{display:none;}
+.tab-content.active{display:block;}
+
+/* SPINNER */
+.spinner{display:inline-block;width:11px;height:11px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;margin-right:5px;vertical-align:middle;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loading{text-align:center;padding:2rem;color:var(--text3);font-family:var(--mono);font-size:11px;}
+
+.sep{border:none;border-top:1px solid var(--border);margin:.6rem 0;}
+.sec-label{font-family:var(--mono);font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px;}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:1.2rem;width:90%;max-width:500px;max-height:90vh;overflow-y:auto;}
+.modal h2{font-family:var(--mono);font-size:13px;color:var(--accent);margin-bottom:1rem;}
+.fg{margin-bottom:.65rem;}
+.fg label{font-size:10px;color:var(--text3);display:block;margin-bottom:2px;font-family:var(--mono);}
+.fg input,.fg select,.fg textarea{width:100%;padding:7px 9px;border-radius:7px;border:1px solid var(--border2);background:var(--surface2);color:var(--text);font-size:12px;font-family:var(--mono);outline:none;transition:border-color .15s;}
+.fg input:focus,.fg select:focus{border-color:var(--accent);}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+
+@media(max-width:560px){.metrics{grid-template-columns:1fr 1fr;}.g2{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">COMPRA<span>·</span>ÁGIL<span>·</span>PRO</div>
+  <div class="header-right">
+    <div class="empresa-bar" style="margin-bottom:0;padding:.4rem .8rem;border-radius:20px;">
+      <div class="empresa-dot" id="empresa-dot" style="background:var(--accent);"></div>
+      <select id="empresa-select" onchange="switchEmpresa(this.value)"></select>
+      <button onclick="openModal('modal-empresa',null)" style="border:none;background:transparent;cursor:pointer;font-size:13px;color:var(--accent);padding:0;line-height:1;">＋</button>
+    </div>
+    <span id="api-status" style="font-family:var(--mono);font-size:10px;color:var(--text3);">sin ticket</span>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- SETUP ANTHROPIC -->
+<div class="setup setup-warn" id="setup-ai">
+  <span>⚙ API Key Anthropic para análisis IA:</span>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+    <input type="password" id="ai-key" placeholder="sk-ant-api03-..." style="padding:5px 9px;border-radius:6px;border:1px solid #3D2E00;font-size:11px;width:220px;background:var(--surface2);color:var(--text);font-family:var(--mono);outline:none;"/>
+    <button class="btn btn-accent btn-sm" onclick="saveAIKey()">Guardar</button>
+    <a href="https://console.anthropic.com/settings/keys" target="_blank" style="font-size:10px;color:var(--amber);">Obtener →</a>
+  </div>
+</div>
+
+<!-- TICKET: configurado en Netlify como variable de entorno MP_TICKET -->
+
+<!-- METRICS -->
+<div class="metrics">
+  <div class="metric"><div class="metric-label">Activas hoy</div><div class="metric-value accent" id="m-activas">—</div></div>
+  <div class="metric"><div class="metric-label">Relevantes</div><div class="metric-value green" id="m-rel">—</div></div>
+  <div class="metric"><div class="metric-label">Cierra hoy</div><div class="metric-value amber" id="m-hoy">—</div></div>
+  <div class="metric"><div class="metric-label">Monto promedio</div><div class="metric-value" id="m-prom">—</div></div>
+  <div class="metric"><div class="metric-label">Competidores</div><div class="metric-value" id="m-comp">—</div></div>
+  <div class="metric"><div class="metric-label">En historial</div><div class="metric-value" id="m-hist">—</div></div>
+</div>
+
+<!-- TABS -->
+<div class="tab-bar">
+  <div class="tab active" onclick="setTab('buscar',this)">Buscar activas</div>
+  <div class="tab" onclick="setTab('historial',this)">Historial adjudicaciones</div>
+  <div class="tab" onclick="setTab('competidores',this)">Competidores</div>
+  <div class="tab" onclick="setTab('precios',this)">Precios referencia</div>
+</div>
+
+<!-- TAB: BUSCAR ACTIVAS -->
+<div class="tab-content active" id="tab-buscar">
+  <div class="search-panel">
+    <div class="search-title">Selecciona rubro → keyword → busca</div>
+    <div class="rubro-chips" id="rubro-chips"></div>
+    <div class="search-row">
+      <input type="text" class="search-input" id="search-q" placeholder="keyword de búsqueda..." onkeydown="if(event.key==='Enter')buscarActivas()"/>
+      <select class="estado-select" id="search-estado">
+        <option value="publicada">Publicadas (activas)</option>
+        <option value="publicada,proveedor_seleccionado">Publicadas + Adjudicadas</option>
+        <option value="proveedor_seleccionado">Adjudicadas</option>
+        <option value="cerrada">Cerradas</option>
+      </select>
+      <select class="estado-select" id="search-region">
+        <option value="">Todo Chile</option>
+        <option value="15">Arica y Parinacota</option>
+        <option value="1">Tarapacá</option>
+        <option value="2">Antofagasta</option>
+        <option value="3">Atacama</option>
+        <option value="4">Coquimbo</option>
+        <option value="5">Valparaíso</option>
+        <option value="13">Metropolitana</option>
+        <option value="6">O'Higgins</option>
+        <option value="7">Maule</option>
+        <option value="16">Ñuble</option>
+        <option value="8">Biobío</option>
+        <option value="9">Araucanía</option>
+        <option value="14">Los Ríos</option>
+        <option value="10">Los Lagos</option>
+        <option value="11">Aysén</option>
+        <option value="12">Magallanes</option>
+      </select>
+      <button class="btn btn-accent" onclick="buscarActivas()">Buscar ↗</button>
+    </div>
+  </div>
+  <div id="activas-result"></div>
+  <div id="detail-container"></div>
+</div>
+
+<!-- TAB: HISTORIAL -->
+<div class="tab-content" id="tab-historial">
+  <div class="search-panel">
+    <div class="search-title">Historial de adjudicaciones por keyword</div>
+    <div class="rubro-chips" id="rubro-chips-hist"></div>
+    <div class="search-row">
+      <input type="text" class="search-input" id="hist-q" placeholder="keyword..." onkeydown="if(event.key==='Enter')buscarHistorial()"/>
+      <select class="estado-select" id="hist-desde">
+        <option value="7">Últimos 7 días</option>
+        <option value="30" selected>Últimos 30 días</option>
+        <option value="90">Últimos 90 días</option>
+        <option value="180">Últimos 6 meses</option>
+      </select>
+      <button class="btn btn-accent" onclick="buscarHistorial()">Buscar ↗</button>
+    </div>
+  </div>
+  <div id="hist-result"></div>
+</div>
+
+<!-- TAB: COMPETIDORES -->
+<div class="tab-content" id="tab-competidores">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem;flex-wrap:wrap;gap:8px;">
+    <div style="font-family:var(--mono);font-size:11px;color:var(--text2);">Basado en adjudicaciones consultadas en esta sesión</div>
+    <button class="btn btn-sm" onclick="analizarCompetidoresIA()">🔵 Analizar con IA ↗</button>
+  </div>
+  <div id="comp-result"><div class="loading">Busca adjudicaciones primero.</div></div>
+  <div id="comp-ia-result"></div>
+</div>
+
+<!-- TAB: PRECIOS -->
+<div class="tab-content" id="tab-precios">
+  <div style="font-family:var(--mono);font-size:11px;color:var(--text2);margin-bottom:.8rem;">Precios reales pagados por el Estado · datos API Compra Ágil</div>
+  <div id="precios-result"><div class="loading">Busca adjudicaciones primero.</div></div>
+</div>
+
+</div><!-- /main -->
+
+<!-- MODAL EMPRESA -->
+<div class="modal-overlay" id="modal-empresa">
+  <div class="modal">
+    <h2>// CONFIGURAR EMPRESA</h2>
+    <input type="hidden" id="e-id"/>
+    <div class="g2">
+      <div class="fg"><label>Nombre</label><input id="e-nombre" placeholder="OUTRO SpA"/></div>
+      <div class="fg"><label>RUT</label><input id="e-rut" placeholder="76.146.139-7"/></div>
+    </div>
+    <div class="fg"><label>Rubro principal</label>
+      <select id="e-rubro">
+        <option value="comunicaciones">Comunicaciones / Audiovisual</option>
+        <option value="ti">TI / Software</option>
+        <option value="servicios">Servicios profesionales</option>
+        <option value="industrial">Insumos industriales</option>
+        <option value="salud">Salud / Equipamiento médico</option>
+        <option value="agri">Agrícola / Forestal</option>
+        <option value="educacion">Educación / Capacitación</option>
+        <option value="construccion">Construcción</option>
+        <option value="otro">Otro</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>Subrubros y keywords (uno por línea o separados por coma)</label>
+      <textarea id="e-keywords" rows="5" placeholder="video institucional&#10;fotografía&#10;producción audiovisual&#10;SAG&#10;capacitación"></textarea>
+      <div style="font-size:9px;color:var(--text3);margin-top:2px;">Cada línea = un keyword para búsqueda.</div>
+    </div>
+    <div class="fg">
+      <label>Color</label>
+      <div style="display:flex;gap:6px;" id="color-sel">
+        <div onclick="selColor('#C8F535')" data-c="#C8F535" style="width:20px;height:20px;border-radius:50%;background:#C8F535;cursor:pointer;border:2px solid transparent;"></div>
+        <div onclick="selColor('#3ECF6B')" data-c="#3ECF6B" style="width:20px;height:20px;border-radius:50%;background:#3ECF6B;cursor:pointer;border:2px solid transparent;"></div>
+        <div onclick="selColor('#4A9EFF')" data-c="#4A9EFF" style="width:20px;height:20px;border-radius:50%;background:#4A9EFF;cursor:pointer;border:2px solid transparent;"></div>
+        <div onclick="selColor('#FF4A4A')" data-c="#FF4A4A" style="width:20px;height:20px;border-radius:50%;background:#FF4A4A;cursor:pointer;border:2px solid transparent;"></div>
+        <div onclick="selColor('#F5A623')" data-c="#F5A623" style="width:20px;height:20px;border-radius:50%;background:#F5A623;cursor:pointer;border:2px solid transparent;"></div>
+        <div onclick="selColor('#C07AFF')" data-c="#C07AFF" style="width:20px;height:20px;border-radius:50%;background:#C07AFF;cursor:pointer;border:2px solid transparent;"></div>
+      </div>
+    </div>
+    <div style="display:flex;gap:7px;margin-top:1rem;flex-wrap:wrap;">
+      <button class="btn btn-accent" onclick="saveEmpresa()">Guardar empresa</button>
+      <button class="btn btn-sm" id="btn-gen-kw" onclick="generarKWIA()">✨ Sugerir keywords IA</button>
+      <button class="btn btn-sm" onclick="closeModal('modal-empresa')">Cancelar</button>
+    </div>
+    <div id="modal-msg" style="margin-top:.5rem;font-size:10px;font-family:var(--mono);"></div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════
+// CONFIG
+// ═══════════════════════════════════════════════
+// API calls van a las Netlify Functions (proxy server-side)
+// El ticket de MP está seguro en variables de entorno Netlify
+const PROXY_BASE = '/.netlify/functions';
+let AI_KEY = localStorage.getItem('ca_ai_key') || '';
+let selColor_ = '#C8F535';
+
+function saveAIKey(){
+  const k = document.getElementById('ai-key').value.trim(); if(!k) return;
+  AI_KEY = k; localStorage.setItem('ca_ai_key', k);
+  document.getElementById('setup-ai').className='setup setup-ok';
+  document.getElementById('setup-ai').innerHTML='<span>✓ API Key Anthropic activa</span><button class="btn btn-sm" onclick="localStorage.removeItem(\'ca_ai_key\');location.reload()" style="background:var(--surface2);">Cambiar</button>';
+}
+if(AI_KEY){ document.getElementById('setup-ai').className='setup setup-ok'; document.getElementById('setup-ai').innerHTML='<span>✓ API Key Anthropic activa</span><button class="btn btn-sm" onclick="localStorage.removeItem(\'ca_ai_key\');location.reload()" style="background:var(--surface2);">Cambiar</button>'; }
+
+// Ticket gestionado en servidor Netlify
+document.getElementById('api-status').textContent = 'netlify proxy';
+document.getElementById('api-status').style.color = 'var(--green)';
+
+// ═══════════════════════════════════════════════
+// EMPRESAS
+// ═══════════════════════════════════════════════
+const DEFAULT_EMPRESAS = [
+  {id:'outro', nombre:'OUTRO SpA', rut:'76.146.139-7', rubro:'comunicaciones', color:'#C8F535',
+   keywords:'video institucional\nfotografía\nproducción audiovisual\nevento cultural\ncapacitación\nSAG\nMINSAL\nregistro audiovisual\ndifusión\nconcierto\nrecital'},
+  {id:'brauer', nombre:'BRAUER SpA', rut:'76.731.190-7', rubro:'industrial', color:'#4A9EFF',
+   keywords:'insumos industriales\nferretería\nEPP\nprotección personal\nherramientas\nrepuestos\nequipamiento industrial\nmateriales'}
+];
+
+let empresas = JSON.parse(localStorage.getItem('ca_empresas')||'null') || DEFAULT_EMPRESAS;
+let activeId = localStorage.getItem('ca_active') || empresas[0].id;
+let cache = JSON.parse(localStorage.getItem('ca_cache')||'[]'); // adjudicaciones históricas
+
+function getEmp(){ return empresas.find(e=>e.id===activeId)||empresas[0]; }
+
+function getKeywords(emp){
+  return (emp.keywords||'').split(/[\n,]/).map(k=>k.trim()).filter(Boolean);
+}
+
+// Subrubros DB para chips visuales
+const SUBRUBROS = {
+  comunicaciones: [{label:'Audiovisual',kw:'video institucional',cls:''},{label:'Fotografía',kw:'fotografía',cls:''},{label:'Eventos',kw:'evento cultural',cls:''},{label:'Capacitación',kw:'capacitación',cls:''},{label:'Difusión',kw:'difusión',cls:''}],
+  industrial: [{label:'Insumos',kw:'insumos industriales',cls:'industrial'},{label:'Ferretería',kw:'ferretería',cls:'industrial'},{label:'EPP',kw:'EPP',cls:'industrial'},{label:'Herramientas',kw:'herramientas',cls:'industrial'},{label:'Equipamiento',kw:'equipamiento industrial',cls:'industrial'}],
+  agri: [{label:'SAG',kw:'SAG',cls:'agri'},{label:'Agrícola',kw:'agrícola',cls:'agri'},{label:'Fitosanitario',kw:'fitosanitario',cls:'agri'},{label:'Riego',kw:'riego',cls:'agri'}],
+  salud: [{label:'Insumos médicos',kw:'insumo médico',cls:'salud'},{label:'Equipamiento clínico',kw:'equipamiento clínico',cls:'salud'},{label:'MINSAL',kw:'MINSAL',cls:'salud'}],
+  ti: [{label:'Software',kw:'software',cls:''},{label:'TI',kw:'tecnología información',cls:''},{label:'Soporte',kw:'soporte técnico',cls:''}],
+  servicios: [{label:'Consultoría',kw:'consultoría',cls:''},{label:'Asesoría',kw:'asesoría',cls:''}],
+  educacion: [{label:'Capacitación',kw:'capacitación',cls:''},{label:'Taller',kw:'taller',cls:''}],
+  construccion: [{label:'Obras',kw:'obras',cls:''},{label:'Mantención',kw:'mantención',cls:''}],
+  otro: [{label:'Servicio',kw:'servicio',cls:''},{label:'Suministro',kw:'suministro',cls:''}],
+};
+
+function renderEmpresaSelector(){
+  const sel = document.getElementById('empresa-select');
+  sel.innerHTML = empresas.map(e=>`<option value="${e.id}">${e.nombre}</option>`).join('');
+  sel.value = activeId;
+  document.getElementById('empresa-dot').style.background = getEmp().color;
+}
+
+function switchEmpresa(id){
+  activeId = id; localStorage.setItem('ca_active', id);
+  document.getElementById('empresa-dot').style.background = getEmp().color;
+  renderRubroChips('rubro-chips');
+  renderRubroChips('rubro-chips-hist');
+}
+
+function renderRubroChips(containerId){
+  const emp = getEmp();
+  const kws = getKeywords(emp);
+  const rubro = emp.rubro;
+  const base = SUBRUBROS[rubro] || [];
+  const c = document.getElementById(containerId);
+  if (!c) return;
+
+  // Chips de subrubros predefinidos + keywords personalizadas
+  const allChips = [...base];
+
+  // Agregar keywords del perfil que no estén en base
+  kws.forEach(kw => {
+    if (!base.find(b => b.kw.toLowerCase() === kw.toLowerCase())) {
+      allChips.push({label: kw, kw: kw, cls: '', custom: true});
+    }
+  });
+
+  c.innerHTML = allChips.slice(0, 15).map(ch =>
+    `<span class="rubro-chip ${ch.cls}" onclick="selectChip(this,'${ch.kw.replace(/'/g,"\\'")}','${containerId}')">${ch.label}</span>`
+  ).join('');
+}
+
+function selectChip(el, kw, containerId){
+  // Deselect all in same container
+  document.querySelectorAll('#'+containerId+' .rubro-chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  // Set keyword input
+  const inputId = containerId === 'rubro-chips' ? 'search-q' : 'hist-q';
+  document.getElementById(inputId).value = kw;
+}
+
+function selColor(c){
+  selColor_ = c;
+  document.querySelectorAll('#color-sel div').forEach(d=>{d.style.border=d.dataset.c===c?'2px solid #fff':'2px solid transparent';});
+}
+
+function openModal(id, eid){
+  document.getElementById(id).classList.add('open');
+  if(id==='modal-empresa'){
+    if(eid){
+      const e = empresas.find(x=>x.id===eid);
+      if(e){
+        document.getElementById('e-id').value=e.id;
+        document.getElementById('e-nombre').value=e.nombre||'';
+        document.getElementById('e-rut').value=e.rut||'';
+        document.getElementById('e-rubro').value=e.rubro||'otro';
+        document.getElementById('e-keywords').value=e.keywords||'';
+        selColor_ = e.color||'#C8F535';
+        selColor(selColor_);
+      }
+    } else {
+      document.getElementById('e-id').value='';
+      ['e-nombre','e-rut','e-keywords'].forEach(id=>document.getElementById(id).value='');
+      selColor_ = '#C8F535'; selColor(selColor_);
+    }
+    document.getElementById('modal-msg').textContent='';
+  }
+}
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+
+function saveEmpresa(){
+  const nombre = document.getElementById('e-nombre').value.trim();
+  if(!nombre){ document.getElementById('modal-msg').textContent='⚠ Ingresa el nombre.'; return; }
+  const eid = document.getElementById('e-id').value;
+  const data = {
+    id: eid || ('emp_'+Date.now()),
+    nombre, rut: document.getElementById('e-rut').value.trim(),
+    rubro: document.getElementById('e-rubro').value,
+    keywords: document.getElementById('e-keywords').value.trim(),
+    color: selColor_
+  };
+  if(eid){ const idx=empresas.findIndex(e=>e.id===eid); if(idx>=0)empresas[idx]=data; }
+  else empresas.push(data);
+  localStorage.setItem('ca_empresas', JSON.stringify(empresas));
+  closeModal('modal-empresa');
+  renderEmpresaSelector();
+  renderRubroChips('rubro-chips');
+  renderRubroChips('rubro-chips-hist');
+  if(!eid){ activeId=data.id; switchEmpresa(data.id); }
+}
+
+async function generarKWIA(){
+  const nombre = document.getElementById('e-nombre').value.trim();
+  const rubro = document.getElementById('e-rubro').value;
+  if(!nombre){ document.getElementById('modal-msg').textContent='⚠ Escribe el nombre primero.'; return; }
+  document.getElementById('btn-gen-kw').textContent='Generando...';
+  document.getElementById('btn-gen-kw').disabled=true;
+  try{
+    const prompt=`Empresa chilena "${nombre}" rubro "${rubro}". Lista 12 keywords cortas y precisas para buscar Compras Ágiles relevantes en Mercado Público Chile. Una por línea, sin explicación.`;
+    const txt = await callAI(prompt, 200);
+    document.getElementById('e-keywords').value = txt.trim();
+    document.getElementById('modal-msg').textContent='✓ Keywords generadas';
+  }catch(e){ document.getElementById('modal-msg').textContent='Error: '+e.message; }
+  document.getElementById('btn-gen-kw').textContent='✨ Sugerir keywords IA';
+  document.getElementById('btn-gen-kw').disabled=false;
+}
+
+// ═══════════════════════════════════════════════
+// AI
+// ═══════════════════════════════════════════════
+async function callAI(prompt, maxTokens=380){
+  if(!AI_KEY) return '⚠ Configura tu API Key de Anthropic.';
+  const r = await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':AI_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:maxTokens,messages:[{role:'user',content:prompt}]})
+  });
+  const d = await r.json();
+  if(d.error) throw new Error(d.error.message);
+  return d.content?.[0]?.text||'';
+}
+
+// ═══════════════════════════════════════════════
+// CAPA 1: API COMPRA ÁGIL
+// ═══════════════════════════════════════════════
+async function fetchCA(params){
+  // Llamada al proxy Netlify — el ticket queda seguro en el servidor
+  const url = new URL(`${PROXY_BASE}/compra-agil`, window.location.origin);
+  Object.entries(params).forEach(([k,v])=>{ if(v!==undefined&&v!=='') url.searchParams.set(k,v); });
+  const r = await fetch(url.toString());
+  if(r.status===429) throw new Error('Cuota diaria agotada (429). Intenta mañana.');
+  if(r.status===500){
+    const d = await r.json();
+    throw new Error(d.error||'Error en servidor proxy.');
+  }
+  if(!r.ok) throw new Error('Error proxy: '+r.status);
+  const d = await r.json();
+  if(d.success==='NOK') throw new Error(d.errors?.[0]?.mensaje||'Error desconocido');
+  return d.payload;
+}
+
+async function fetchCADetalle(codigo){
+  try{
+    const url = `${PROXY_BASE}/compra-agil-detalle?codigo=${encodeURIComponent(codigo)}`;
+    const r = await fetch(url);
+    if(!r.ok) return null;
+    const d = await r.json();
+    return d.payload||null;
+  }catch(e){ return null; }
+}
+
+function estadoTag(estado){
+  const map = {
+    'publicada':'<span class="tag tag-pub">Publicada</span>',
+    'cerrada':'<span class="tag tag-cerr">Cerrada</span>',
+    'proveedor_seleccionado':'<span class="tag tag-adj">Adjudicada</span>',
+    'oc_emitida':'<span class="tag tag-adj">OC emitida</span>',
+    'desierta':'<span class="tag tag-des">Desierta</span>',
+    'cancelada':'<span class="tag tag-des">Cancelada</span>',
+  };
+  return map[estado]||`<span class="tag tag-gray">${estado}</span>`;
+}
+
+function scoreCA(ca, emp){
+  let s = 35;
+  const texto = ((ca.nombre||'')+(ca.descripcion||'')).toLowerCase();
+  const kws = getKeywords(emp);
+  const kwMatch = kws.filter(k=>k&&texto.includes(k.toLowerCase())).length;
+  s += Math.min(30, kwMatch*10);
+  const monto = ca.montos?.monto_disponible_clp||0;
+  if(monto > 0 && monto <= 3000000) s += 15;
+  else if(monto > 3000000 && monto <= 8000000) s += 10;
+  const nOfertas = ca.resumen?.total_ofertas_recibidas||0;
+  if(nOfertas === 0) s += 10; // menos competencia
+  else if(nOfertas <= 2) s += 5;
+  return Math.min(95, Math.max(15, s));
+}
+
+// ═══════════════════════════════════════════════
+// CAPA 2: BÚSQUEDA ACTIVAS
+// ═══════════════════════════════════════════════
+let activeItems = [], selectedCA = null;
+
+async function buscarActivas(){
+  const q = document.getElementById('search-q').value.trim();
+  const estado = document.getElementById('search-estado').value;
+  const region = document.getElementById('search-region').value;
+  if(!q){ showError('activas-result','Escribe una keyword primero.'); return; }
+
+  const c = document.getElementById('activas-result');
+  c.innerHTML = '<div class="loading"><span class="spinner"></span>Buscando en Compra Ágil...</div>';
+  document.getElementById('detail-container').innerHTML='';
+
+  try{
+    const payload = await fetchCA({q, estado, region, tamano_pagina:50, numero_pagina:1});
+    activeItems = (payload.items||[]).map(ca=>({
+      ...ca, _score:scoreCA(ca, getEmp())
+    })).sort((a,b)=>b._score-a._score);
+
+    const total = payload.paginacion?.total_resultados||activeItems.length;
+    const cierranHoy = activeItems.filter(ca=>{
+      if(!ca.fechas?.fecha_cierre) return false;
+      const fc = new Date(ca.fechas.fecha_cierre);
+      const hoy = new Date();
+      return fc.toDateString()===hoy.toDateString();
+    }).length;
+    const montos = activeItems.filter(ca=>(ca.montos?.monto_disponible_clp||0)>0).map(ca=>ca.montos.monto_disponible_clp);
+    const promMonto = montos.length>0?Math.round(montos.reduce((a,b)=>a+b,0)/montos.length):0;
+
+    document.getElementById('m-activas').textContent = total;
+    document.getElementById('m-rel').textContent = activeItems.filter(ca=>ca._score>=60).length;
+    document.getElementById('m-hoy').textContent = cierranHoy;
+    document.getElementById('m-prom').textContent = promMonto>0?'$'+(promMonto/1000).toFixed(0)+'K':'—';
+
+    if(!activeItems.length){
+      c.innerHTML='<div class="loading">Sin resultados para "'+q+'".</div>';
+      return;
+    }
+
+    c.innerHTML = `<div style="font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:.6rem;">${total} resultados · mostrando ${activeItems.length} · keyword: "${q}"</div>
+    <div class="cards-list">${activeItems.map((ca,i)=>{
+      const s=ca._score, cls=s>=70?'score-h':s>=50?'score-m':'score-l';
+      const monto=ca.montos?.monto_disponible_clp||0;
+      const ms=monto>0?'$'+(monto/1000).toFixed(0)+'K':'sin monto';
+      const cierre=ca.fechas?.fecha_cierre?new Date(ca.fechas.fecha_cierre).toLocaleDateString('es-CL',{day:'2-digit',month:'short'}): '—';
+      const nOfertas=ca.resumen?.total_ofertas_recibidas||0;
+      return `<div class="ca-card ${selectedCA?.codigo===ca.codigo?'selected':''}" onclick="selectItem(${i})">
+        <div class="ca-header"><div class="ca-title">${i+1}. ${ca.nombre||'Sin nombre'}</div><span class="ca-score ${cls}">${s}%</span></div>
+        <div class="ca-meta"><span>${ca.institucion?.organismo_comprador||'—'}</span><span>Cierra: ${cierre}</span><span>${ms}</span><span>${ca.codigo}</span></div>
+        <div style="display:flex;gap:3px;flex-wrap:wrap;">${estadoTag(ca.estado?.codigo||'')}${nOfertas>0?`<span class="tag tag-gray">${nOfertas} oferta(s)</span>`:'<span class="tag tag-gray">sin ofertas</span>'}<span class="tag tag-gray">${ca.institucion?.nombre_region||'Chile'}</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:${s}%;background:${s>=70?'var(--accent)':s>=50?'var(--amber)':'var(--red)'}"></div></div>
+      </div>`;
+    }).join('')}</div>`;
+
+  }catch(e){
+    showError('activas-result', e.message);
+  }
+}
+
+function showError(containerId, msg){
+  document.getElementById(containerId).innerHTML=`<div class="ai-box ai-red">${msg}</div>`;
+}
+
+async function selectItem(idx){
+  selectedCA = activeItems[idx];
+  // Re-render list to show selection
+  document.querySelectorAll('.ca-card').forEach((el,i)=>{
+    el.classList.toggle('selected', i===idx);
+  });
+  showDetailSkeleton(selectedCA);
+  const detalle = await fetchCADetalle(selectedCA.codigo);
+  renderDetalle(selectedCA, detalle);
+}
+
+function showDetailSkeleton(ca){
+  document.getElementById('detail-container').innerHTML=`
+    <div class="detail-panel" style="margin-top:.6rem;">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:.8rem;flex-wrap:wrap;gap:5px;">
+        <div style="font-size:12px;font-weight:600;flex:1;">${ca.nombre}</div>
+        <a href="https://www.mercadopublico.cl/compraagil/index.html#/proceso/${ca.codigo}" target="_blank" style="font-size:10px;color:var(--blue);font-family:var(--mono);">Ver portal →</a>
+      </div>
+      <div class="loading"><span class="spinner"></span>Cargando detalle...</div>
+    </div>`;
+}
+
+function renderDetalle(ca, det){
+  const d = det || {};
+  const monto = d.presupuesto?.monto_disponible_clp || ca.montos?.monto_disponible_clp || 0;
+  const productos = d.productos_solicitados || [];
+  const proveedores = d.proveedores_cotizando || [];
+  const ganador = proveedores.find(p=>p.seleccion?.proveedor_seleccionado || p.estado_por_comprador==='SELECCIONADO');
+  const cierre = d.fechas?.fecha_cierre ? new Date(d.fechas.fecha_cierre).toLocaleDateString('es-CL',{day:'2-digit',month:'short',year:'numeric'}) : '—';
+  const plazoEnt = d.entrega?.plazo_entrega_dias;
+  const nOfertas = d.resumen?.total_ofertas_recibidas || proveedores.length || 0;
+
+  // Guardar en caché si tiene adjudicación
+  if(ganador && !cache.find(x=>x.codigo===ca.codigo)){
+    const montoGanador = ganador.monto_total || ganador.valor_neto || 0;
+    cache.push({
+      codigo: ca.codigo, nombre: ca.nombre||'',
+      organismo: ca.institucion?.organismo_comprador || d.institucion?.organismo_comprador || '',
+      region: ca.institucion?.nombre_region||'',
+      ganador: ganador.razon_social||'', rutGanador: ganador.rut_proveedor||'',
+      esEMT: ganador.es_emt||false,
+      monto: monto, montoGanador,
+      nOferentes: nOfertas,
+      fecha: ca.fechas?.fecha_publicacion||'',
+      productos: productos.map(p=>({nombre:p.nombre,cantidad:p.cantidad,unidad:p.unidad_medida})),
+      cotizaciones: proveedores.map(p=>({razon:p.razon_social,rut:p.rut_proveedor,monto:p.monto_total,ganador:!!(p.seleccion?.proveedor_seleccionado||p.estado_por_comprador==='SELECCIONADO')}))
+    });
+    cache = cache.slice(-300);
+    localStorage.setItem('ca_cache', JSON.stringify(cache));
+    actualizarMetricasCache();
+    actualizarCompetidores();
+    actualizarPrecios();
+  }
+
+  const productosHTML = productos.length>0?`
+    <div class="sep"></div>
+    <div class="sec-label">Productos solicitados</div>
+    <table class="hist-table"><thead><tr><th>Producto</th><th>Cantidad</th><th>Unidad</th></tr></thead>
+    <tbody>${productos.map(p=>`<tr><td>${p.nombre}</td><td>${p.cantidad}</td><td>${p.unidad_medida||'—'}</td></tr>`).join('')}</tbody></table>
+  `:'' ;
+
+  const provHTML = proveedores.length>0?`
+    <div class="sep"></div>
+    <div class="sec-label">Proveedores cotizando (${proveedores.length})</div>
+    <table class="hist-table"><thead><tr><th>Proveedor</th><th>RUT</th><th>EMT</th><th>Total</th><th>Estado</th></tr></thead>
+    <tbody>${proveedores.map(p=>{
+      const esGanador = p.seleccion?.proveedor_seleccionado || p.estado_por_comprador==='SELECCIONADO';
+      return `<tr>
+        <td class="${esGanador?'winner':''}">${p.razon_social||'—'}${esGanador?' ✓':''}</td>
+        <td>${p.rut_proveedor||'—'}</td>
+        <td>${p.es_emt?'<span class="tag tag-emt">EMT</span>':'—'}</td>
+        <td class="${esGanador?'monto':''}">${(p.monto_total||p.valor_neto||0)>0?'$'+(p.monto_total||p.valor_neto).toLocaleString('es-CL'):'—'}</td>
+        <td>${p.estado_cotizacion?.glosa||p.estado_por_comprador||'—'}</td>
+      </tr>`;}).join('')}</tbody></table>
+  `:'';
+
+  const desc = d.descripcion||'';
+
+  document.getElementById('detail-container').innerHTML=`
+    <div class="detail-panel" style="margin-top:.6rem;">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:.8rem;flex-wrap:wrap;gap:5px;">
+        <div style="font-size:12px;font-weight:600;flex:1;">${ca.nombre}</div>
+        <a href="https://www.mercadopublico.cl/compraagil/index.html#/proceso/${ca.codigo}" target="_blank" style="font-size:10px;color:var(--blue);font-family:var(--mono);">Ver portal →</a>
+      </div>
+      ${desc?`<div style="font-size:11px;color:var(--text2);margin-bottom:.7rem;line-height:1.6;">${desc.substring(0,300)}${desc.length>300?'...':''}</div>`:''}
+      <div class="data-grid">
+        <div class="data-item"><div class="di-label">Organismo</div><div class="di-val">${d.institucion?.organismo_comprador||ca.institucion?.organismo_comprador||'—'}</div></div>
+        <div class="data-item"><div class="di-label">Monto disponible</div><div class="di-val accent">${monto>0?'$'+monto.toLocaleString('es-CL'):'No publicado'}</div></div>
+        <div class="data-item"><div class="di-label">Estado</div><div class="di-val">${d.estado?.glosa||ca.estado?.glosa||'—'}</div></div>
+        <div class="data-item"><div class="di-label">Cierre</div><div class="di-val">${cierre}</div></div>
+        <div class="data-item"><div class="di-label">Cotizaciones</div><div class="di-val ${nOfertas===0?'amber':nOfertas<=2?'green':''}">${nOfertas}</div></div>
+        <div class="data-item"><div class="di-label">Plazo entrega</div><div class="di-val">${plazoEnt?plazoEnt+' días':'—'}</div></div>
+        <div class="data-item"><div class="di-label">Región</div><div class="di-val">${ca.institucion?.nombre_region||d.institucion?.nombre_region||'—'}</div></div>
+        <div class="data-item"><div class="di-label">Llamado</div><div class="di-val">${d.convocatoria?.descripcion||'—'}</div></div>
+      </div>
+      ${productosHTML}${provHTML}
+      <div class="sep"></div>
+      <div id="detail-ia"><button class="btn btn-accent btn-sm" onclick="analizarCAIA()">🔵 Analizar con IA ↗</button></div>
+    </div>`;
+}
+
+async function analizarCAIA(){
+  if(!selectedCA) return;
+  const c = document.getElementById('detail-ia');
+  c.innerHTML='<div class="loading"><span class="spinner"></span>Analizando...</div>';
+  const emp = getEmp();
+  const det = cache.find(x=>x.codigo===selectedCA.codigo);
+  const nOfertas = selectedCA.resumen?.total_ofertas_recibidas||0;
+  const monto = selectedCA.montos?.monto_disponible_clp||0;
+
+  // Buscar historial de este organismo en caché
+  const org = selectedCA.institucion?.organismo_comprador||'';
+  const histOrg = cache.filter(x=>x.organismo===org&&x.ganador);
+  const histCtx = histOrg.length>0?`Historial ${org}: ${histOrg.slice(0,4).map(x=>`${x.ganador}($${(x.montoGanador/1000).toFixed(0)}K,${x.nOferentes}of`).join('|')}`:'Sin historial previo del organismo.';
+
+  const prompt=`[COMPRA ÁGIL] "${selectedCA.nombre}"
+Organismo:${org} | Monto:$${(monto/1000).toFixed(0)}K | Cotizaciones actuales:${nOfertas}
+${det?.cotizaciones?.length?'Oferentes: '+det.cotizaciones.map(c=>c.razon+(c.ganador?' ✓':'')).join(', '):''}
+${histCtx}
+Empresa:${emp.nombre}(${emp.rubro})
+[PREDICCIÓN] 1)¿Conviene cotizar? 2)Precio sugerido para ganar 3)Competidores probables 4)Táctica concreta en máx 4 líneas`;
+
+  try{
+    const txt = await callAI(prompt, 350);
+    c.innerHTML=`<div class="sec-label">🔵 Predicción IA</div><div class="ai-box ai-green">${txt.replace(/\n/g,'<br>')}</div>`;
+  }catch(e){ c.innerHTML=`<div class="ai-box ai-red">Error: ${e.message}</div>`; }
+}
+
+// ═══════════════════════════════════════════════
+// CAPA 2: HISTORIAL ADJUDICACIONES
+// ═══════════════════════════════════════════════
+async function buscarHistorial(){
+  const q = document.getElementById('hist-q').value.trim();
+  const diasAtras = parseInt(document.getElementById('hist-desde').value)||30;
+  if(!q){ showError('hist-result','Escribe una keyword primero.'); return; }
+
+  const c = document.getElementById('hist-result');
+  c.innerHTML='<div class="loading"><span class="spinner"></span>Buscando historial...</div>';
+
+  const hasta = new Date();
+  const desde = new Date(); desde.setDate(desde.getDate() - diasAtras);
+  const desdeFmt = desde.toISOString().replace(/\.\d{3}Z/,'Z');
+  const hastaFmt = hasta.toISOString().replace(/\.\d{3}Z/,'Z');
+
+  try{
+    const payload = await fetchCA({
+      q,
+      publicado_desde: desdeFmt,
+      publicado_hasta: hastaFmt,
+      estado: 'proveedor_seleccionado',
+      tamano_pagina: 50
+    });
+
+    const items = payload.items||[];
+    if(!items.length){
+      c.innerHTML='<div class="loading">Sin adjudicaciones para "'+q+'" en los últimos '+diasAtras+' días.</div>';
+      return;
+    }
+
+    c.innerHTML='<div class="loading"><span class="spinner"></span>Cargando detalles de adjudicación ('+items.length+')...</div>';
+
+    // Para cada item, cargar detalle para ver quién ganó
+    const adjudicaciones = [];
+    for(let i=0;i<Math.min(items.length,20);i++){
+      const ca = items[i];
+      c.innerHTML=`<div class="loading"><span class="spinner"></span>Cargando detalle ${i+1}/${Math.min(items.length,20)}...</div>`;
+      await new Promise(r=>setTimeout(r,300));
+      const det = await fetchCADetalle(ca.codigo);
+      const prov = det?.proveedores_cotizando||[];
+      const ganador = prov.find(p=>p.seleccion?.proveedor_seleccionado||p.estado_por_comprador==='SELECCIONADO') || prov[0];
+      const monto = det?.presupuesto?.monto_disponible_clp||ca.montos?.monto_disponible_clp||0;
+
+      const adj = {
+        codigo:ca.codigo, nombre:ca.nombre||'',
+        organismo:ca.institucion?.organismo_comprador||'',
+        region:ca.institucion?.nombre_region||'',
+        monto, nOferentes:prov.length,
+        ganador:ganador?.razon_social||'', rutGanador:ganador?.rut_proveedor||'',
+        montoGanador:ganador?.monto_total||ganador?.valor_neto||0,
+        esEMT:ganador?.es_emt||false,
+        fecha:ca.fechas?.fecha_publicacion||'',
+        productos:(det?.productos_solicitados||[]).map(p=>({nombre:p.nombre,cantidad:p.cantidad})),
+        cotizaciones:prov.map(p=>({razon:p.razon_social,rut:p.rut_proveedor,monto:p.monto_total||p.valor_neto||0,ganador:!!(p.seleccion?.proveedor_seleccionado||p.estado_por_comprador==='SELECCIONADO')}))
+      };
+      adjudicaciones.push(adj);
+
+      // Guardar en caché
+      if(!cache.find(x=>x.codigo===adj.codigo)) cache.push(adj);
+    }
+
+    cache = cache.slice(-300);
+    localStorage.setItem('ca_cache', JSON.stringify(cache));
+    actualizarMetricasCache();
+    actualizarCompetidores();
+    actualizarPrecios();
+
+    renderHistorial(adjudicaciones, q, diasAtras);
+
+  }catch(e){ showError('hist-result', e.message); }
+}
+
+function renderHistorial(adjs, q, dias){
+  const c = document.getElementById('hist-result');
+  const totalMonto = adjs.filter(a=>a.montoGanador>0).reduce((s,a)=>s+a.montoGanador,0);
+  const ganadores = {};
+  adjs.filter(a=>a.ganador).forEach(a=>{
+    if(!ganadores[a.ganador])ganadores[a.ganador]={nombre:a.ganador,rut:a.rutGanador,count:0,monto:0};
+    ganadores[a.ganador].count++; ganadores[a.ganador].monto+=a.montoGanador||0;
+  });
+  const topG = Object.values(ganadores).sort((a,b)=>b.count-a.count).slice(0,3).map(g=>g.nombre).join(', ');
+  const promOferentes = adjs.filter(a=>a.nOferentes>0).reduce((s,a)=>s+a.nOferentes,0)/Math.max(1,adjs.filter(a=>a.nOferentes>0).length);
+
+  c.innerHTML=`
+    <div style="font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:.6rem;">"${q}" · últimos ${dias} días · ${adjs.length} adjudicaciones</div>
+    <div class="metrics" style="margin-bottom:.8rem;">
+      <div class="metric"><div class="metric-label">Adjudicaciones</div><div class="metric-value accent">${adjs.length}</div></div>
+      <div class="metric"><div class="metric-label">Monto total</div><div class="metric-value">${totalMonto>0?'$'+(totalMonto/1e6).toFixed(1)+'M':'—'}</div></div>
+      <div class="metric"><div class="metric-label">Prom. oferentes</div><div class="metric-value green">${promOferentes.toFixed(1)}</div></div>
+      <div class="metric"><div class="metric-label">Proveedores únicos</div><div class="metric-value">${Object.keys(ganadores).length}</div></div>
+    </div>
+    ${topG?`<div style="font-size:10px;color:var(--text2);font-family:var(--mono);margin-bottom:.8rem;">Top ganadores: <b>${topG}</b></div>`:''}
+    <div class="sep"></div>
+    <div class="sec-label">Detalle adjudicaciones</div>
+    <div style="overflow-x:auto;">
+    <table class="hist-table">
+      <thead><tr><th>Código</th><th>Nombre</th><th>Organismo</th><th>Ganador</th><th>Monto adj.</th><th>Oferentes</th><th>Fecha</th></tr></thead>
+      <tbody>${adjs.map(a=>`<tr>
+        <td style="color:var(--text3);">${a.codigo}</td>
+        <td style="max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${a.nombre}">${a.nombre.substring(0,40)}</td>
+        <td style="color:var(--text2);">${(a.organismo||'—').substring(0,25)}</td>
+        <td class="winner">${a.ganador||'—'}${a.esEMT?' <span class="tag tag-emt">EMT</span>':''}</td>
+        <td class="monto">${a.montoGanador>0?'$'+a.montoGanador.toLocaleString('es-CL'):'—'}</td>
+        <td style="text-align:center;">${a.nOferentes||'—'}</td>
+        <td style="color:var(--text3);">${a.fecha?a.fecha.substring(0,10):'—'}</td>
+      </tr>`).join('')}</tbody>
+    </table></div>
+    <div style="margin-top:.8rem;"><button class="btn btn-accent btn-sm" onclick="analizarHistorialIA('${q.replace(/'/g,"\\'")}')">🔵 Analizar mercado con IA ↗</button></div>
+    <div id="hist-ia-result" style="margin-top:.6rem;"></div>`;
+}
+
+async function analizarHistorialIA(q){
+  const c = document.getElementById('hist-ia-result');
+  c.innerHTML='<div class="loading"><span class="spinner"></span>Analizando...</div>';
+  const emp = getEmp();
+  const ganadores = {};
+  cache.filter(a=>a.ganador).forEach(a=>{
+    if(!ganadores[a.ganador])ganadores[a.ganador]={nombre:a.ganador,rut:a.rutGanador,count:0,monto:0,esEMT:a.esEMT};
+    ganadores[a.ganador].count++; ganadores[a.ganador].monto+=a.montoGanador||0;
+  });
+  const resumen = Object.values(ganadores).sort((a,b)=>b.count-a.count).slice(0,8)
+    .map(g=>`${g.nombre}:${g.count}adj/$${(g.monto/1000).toFixed(0)}K${g.esEMT?' EMT':''}`).join(' | ');
+  const montos = cache.filter(a=>a.montoGanador>0).map(a=>a.montoGanador);
+  const promMonto = montos.length?Math.round(montos.reduce((a,b)=>a+b,0)/montos.length):0;
+  const promOf = cache.filter(a=>a.nOferentes>0).reduce((s,a)=>s+a.nOferentes,0)/Math.max(1,cache.filter(a=>a.nOferentes>0).length);
+
+  const prompt=`[DATOS REALES API Compra Ágil Chile] Keyword:"${q}"
+Adjudicaciones: ${cache.length} | Monto promedio ganador:$${(promMonto/1000).toFixed(0)}K | Promedio oferentes:${promOf.toFixed(1)}
+Proveedores que ganan: ${resumen||'sin datos'}
+Empresa:${emp.nombre}(${emp.rubro})
+[PREDICCIÓN] 1)¿Quién domina este mercado? 2)¿Es competible? 3)Precio sugerido para ganar 4)Estrategia para entrar o crecer`;
+
+  try{
+    const txt = await callAI(prompt, 400);
+    c.innerHTML=`<div class="sec-label">🔵 Análisis de mercado IA</div><div class="ai-box ai-purple">${txt.replace(/\n/g,'<br>')}</div>`;
+  }catch(e){ c.innerHTML=`<div class="ai-box ai-red">Error: ${e.message}</div>`; }
+}
+
+// ═══════════════════════════════════════════════
+// CAPA 2: COMPETIDORES Y PRECIOS
+// ═══════════════════════════════════════════════
+function actualizarCompetidores(){
+  const ganadores = {};
+  cache.filter(a=>a.ganador).forEach(a=>{
+    if(!ganadores[a.ganador])ganadores[a.ganador]={nombre:a.ganador,rut:a.rutGanador,count:0,monto:0,esEMT:a.esEMT,orgs:new Set()};
+    ganadores[a.ganador].count++;
+    ganadores[a.ganador].monto+=a.montoGanador||0;
+    ganadores[a.ganador].orgs.add(a.organismo);
+  });
+  const sorted = Object.values(ganadores).sort((a,b)=>b.count-a.count);
+  const maxCount = sorted[0]?.count||1;
+  document.getElementById('m-comp').textContent = sorted.length;
+
+  const c = document.getElementById('comp-result');
+  if(!sorted.length){ c.innerHTML='<div class="loading">Sin datos aún. Busca adjudicaciones primero.</div>'; return; }
+
+  c.innerHTML = sorted.map((g,i)=>`
+    <div class="comp-card">
+      <div class="comp-rank">${String(i+1).padStart(2,'0')}</div>
+      <div style="flex:1;">
+        <div style="font-size:12px;font-weight:600;color:var(--text);">${g.nombre}</div>
+        <div style="font-size:10px;color:var(--text3);font-family:var(--mono);">RUT: ${g.rut||'—'} · ${g.orgs.size} organismo(s)${g.esEMT?' · <span class="tag tag-emt">EMT</span>':''}</div>
+        <div class="comp-bar-wrap" style="margin-top:4px;"><div class="comp-bar" style="width:${Math.round(g.count/maxCount*100)}%;"></div></div>
+      </div>
+      <div style="text-align:right;flex-shrink:0;">
+        <div style="font-family:var(--mono);font-size:13px;font-weight:700;color:var(--accent);">${g.count}</div>
+        <div style="font-size:10px;color:var(--text3);">adj.</div>
+        <div style="font-size:10px;color:var(--text2);font-family:var(--mono);">$${(g.monto/1000).toFixed(0)}K</div>
+      </div>
+    </div>`).join('');
+}
+
+async function analizarCompetidoresIA(){
+  const c = document.getElementById('comp-ia-result');
+  c.innerHTML='<div class="loading"><span class="spinner"></span>Analizando competidores...</div>';
+  const emp = getEmp();
+  const ganadores = {};
+  cache.filter(a=>a.ganador).forEach(a=>{
+    if(!ganadores[a.ganador])ganadores[a.ganador]={nombre:a.ganador,rut:a.rutGanador,count:0,monto:0,esEMT:a.esEMT};
+    ganadores[a.ganador].count++; ganadores[a.ganador].monto+=a.montoGanador||0;
+  });
+  if(!Object.keys(ganadores).length){ c.innerHTML='<div style="font-size:11px;color:var(--text3);">Sin datos. Busca adjudicaciones primero.</div>'; return; }
+  const resumen = Object.values(ganadores).sort((a,b)=>b.count-a.count).slice(0,8)
+    .map(g=>`${g.nombre}(${g.count}adj,${g.esEMT?'EMT':''},$${(g.monto/1000).toFixed(0)}K)`).join(' | ');
+  const prompt=`[DATOS REALES Compra Ágil] Competidores en rubro ${emp.rubro}: ${resumen}
+Empresa:${emp.nombre}
+[PREDICCIÓN] 1)¿Quiénes son los más peligrosos y por qué? 2)¿Alguno es EMT con ventaja de trato preferencial? 3)¿Cómo diferenciarse? 4)Táctica concreta para ganarles`;
+  try{
+    const txt = await callAI(prompt, 380);
+    c.innerHTML=`<div class="sec-label" style="margin-top:.6rem;">🔵 Análisis IA</div><div class="ai-box ai-purple">${txt.replace(/\n/g,'<br>')}</div>`;
+  }catch(e){ c.innerHTML=`<div class="ai-box ai-red">Error: ${e.message}</div>`; }
+}
+
+function actualizarPrecios(){
+  const c = document.getElementById('precios-result');
+  const todosProductos = cache.flatMap(a=>(a.cotizaciones||[]).filter(co=>co.monto>0).map(co=>({
+    ...co, organismo:a.organismo, fecha:a.fecha, codigoCA:a.codigo
+  })));
+
+  if(!todosProductos.length){
+    c.innerHTML='<div class="loading">Sin datos de precios. Busca adjudicaciones primero.</div>';
+    return;
+  }
+
+  // Agrupar por nombre de CA (proxy del producto)
+  const porCA = {};
+  cache.filter(a=>a.cotizaciones?.length>0).forEach(a=>{
+    const key = a.nombre.substring(0,50);
+    if(!porCA[key])porCA[key]={nombre:a.nombre,cotizaciones:[],nAdj:0};
+    a.cotizaciones.forEach(co=>{ if(co.monto>0)porCA[key].cotizaciones.push(co.monto); });
+    if(a.ganador)porCA[key].nAdj++;
+  });
+
+  const items = Object.values(porCA).filter(p=>p.cotizaciones.length>=2).sort((a,b)=>b.cotizaciones.length-a.cotizaciones.length).slice(0,20);
+
+  if(!items.length){
+    c.innerHTML='<div class="loading">Necesitas más datos para comparar precios.</div>';
+    return;
+  }
+
+  c.innerHTML = `<div style="font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:.8rem;">Basado en ${cache.length} procesos · ${todosProductos.length} cotizaciones</div>` +
+    items.map(item=>{
+      const min=Math.min(...item.cotizaciones),max=Math.max(...item.cotizaciones);
+      const avg=Math.round(item.cotizaciones.reduce((a,b)=>a+b,0)/item.cotizaciones.length);
+      const pct = (v,mn,mx) => mx>mn?Math.round((v-mn)/(mx-mn)*100):50;
+      return `<div class="precio-card">
+        <div style="font-size:11px;font-weight:600;margin-bottom:4px;">${item.nombre.substring(0,80)}</div>
+        <div style="font-size:9px;color:var(--text3);font-family:var(--mono);margin-bottom:5px;">${item.cotizaciones.length} cotizaciones · ${item.nAdj} adj.</div>
+        <div style="position:relative;height:4px;background:var(--border);border-radius:2px;margin-bottom:5px;">
+          <div style="position:absolute;left:0;top:0;height:100%;width:100%;background:linear-gradient(90deg,var(--green),var(--accent),var(--amber),var(--red));border-radius:2px;opacity:.3;"></div>
+          <div style="position:absolute;top:-3px;left:${pct(avg,min,max)}%;width:2px;height:10px;background:var(--accent);border-radius:1px;"></div>
+        </div>
+        <div class="precio-range">
+          <span class="precio-val" style="color:var(--green);">Mín $${min.toLocaleString('es-CL')}</span>
+          <span class="precio-val" style="color:var(--accent);font-weight:700;">Prom $${avg.toLocaleString('es-CL')}</span>
+          <span class="precio-val" style="color:var(--amber);">Máx $${max.toLocaleString('es-CL')}</span>
+        </div>
+      </div>`;
+    }).join('');
+}
+
+function actualizarMetricasCache(){
+  document.getElementById('m-hist').textContent = cache.length;
+  const uniqueComps = new Set(cache.filter(a=>a.ganador).map(a=>a.ganador)).size;
+  document.getElementById('m-comp').textContent = uniqueComps;
+}
+
+// ═══════════════════════════════════════════════
+// NAVEGACIÓN Y UI
+// ═══════════════════════════════════════════════
+function setTab(name, el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  if(el) el.classList.add('active');
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  const tc = document.getElementById('tab-'+name);
+  if(tc) tc.classList.add('active');
+  if(name==='competidores') actualizarCompetidores();
+  if(name==='precios') actualizarPrecios();
+}
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+try{
+  renderEmpresaSelector();
+  renderRubroChips('rubro-chips');
+  renderRubroChips('rubro-chips-hist');
+  actualizarMetricasCache();
+  if(cache.length>0){ actualizarCompetidores(); actualizarPrecios(); }
+}catch(err){
+  document.querySelector('.main').innerHTML=`<div style="background:#1A0A0A;border:1px solid #3A1A1A;border-radius:10px;padding:1.5rem;margin:1rem;font-family:var(--mono);font-size:11px;color:#FF7A7A;"><b>Error:</b> ${err.message}</div>`;
+}
+</script>
+</body>
+</html>
