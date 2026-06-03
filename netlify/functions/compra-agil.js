@@ -1,5 +1,6 @@
-// netlify/functions/compra-agil-detalle.js
-// Proxy hacia https://api2.mercadopublico.cl/v2/compra-agil/{codigo}
+// netlify/functions/compra-agil.js
+// Proxy hacia https://api2.mercadopublico.cl/v2/compra-agil
+// El ticket de MP se guarda en variable de entorno Netlify: MP_TICKET
 
 exports.handler = async (event) => {
   const CORS = {
@@ -17,21 +18,13 @@ exports.handler = async (event) => {
     return {
       statusCode: 500,
       headers: CORS,
-      body: JSON.stringify({ error: 'MP_TICKET no configurado.' })
+      body: JSON.stringify({ error: 'MP_TICKET no configurado en variables de entorno Netlify.' })
     };
   }
 
-  // El código de la Compra Ágil viene como query param: ?codigo=1057539-228-COT26
-  const codigo = event.queryStringParameters?.codigo;
-  if (!codigo) {
-    return {
-      statusCode: 400,
-      headers: CORS,
-      body: JSON.stringify({ error: 'Falta parámetro codigo.' })
-    };
-  }
-
-  const url = `https://api2.mercadopublico.cl/v2/compra-agil/${encodeURIComponent(codigo)}`;
+  // Reenviar query params del frontend a la API
+  const params = new URLSearchParams(event.queryStringParameters || {});
+  const url = `https://api2.mercadopublico.cl/v2/compra-agil?${params.toString()}`;
 
   try {
     const resp = await fetch(url, {
